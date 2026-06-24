@@ -1,1 +1,0 @@
-# Thong-Tin-Sim-AI
