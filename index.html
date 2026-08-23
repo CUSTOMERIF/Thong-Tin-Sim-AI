@@ -880,4 +880,159 @@
             <stop offset="1" stop-color="#5b759e" stop-opacity=".20"/>
           </linearGradient>
           <linearGradient id="frontLand" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" sto
+            <stop offset="0" stop-color="#4c709b" stop-opacity=".18"/>
+            <stop offset="1" stop-color="#19385f" stop-opacity=".42"/>
+          </linearGradient>
+          <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#86b5d8" stop-opacity=".12"/>
+            <stop offset="1" stop-color="#274d75" stop-opacity=".04"/>
+          </linearGradient>
+          <filter id="soft">
+            <feGaussianBlur stdDeviation="3"/>
+          </filter>
+        </defs>
+
+        <path d="M0 278 C95 230 150 244 225 185 C300 125 356 224 435 190 C525 151 557 116 625 182 C710 264 753 205 828 155 C902 106 951 212 1025 176 C1094 143 1148 192 1200 151 L1200 420 L0 420 Z"
+              fill="url(#backLand)" filter="url(#soft)"/>
+
+        <path d="M0 320 C92 276 147 286 222 239 C294 194 351 270 430 237 C505 207 554 168 621 229 C699 298 756 254 832 207 C909 159 967 264 1037 226 C1101 192 1156 231 1200 204 L1200 420 L0 420 Z"
+              fill="url(#frontLand)"/>
+
+        <path d="M0 348 C155 318 265 327 388 304 C520 280 617 318 735 298 C865 276 1000 317 1200 286 L1200 420 L0 420 Z"
+              fill="url(#water)"/>
+
+        <path d="M190 352 C380 326 540 346 704 325 C825 310 923 330 1012 315"
+              fill="none" stroke="#c5d9eb" stroke-opacity=".10" stroke-width="5" filter="url(#soft)"/>
+      </svg>
+
+      <div class="land-mist"></div>
+      <div class="land-mist two"></div>
+      <div class="river-light"></div>
+    </div>
+
+    <div class="orbit"></div>
+
+    <div class="content">
+
+      <div class="status">
+        <span class="status-dot"></span>
+        <span>SIM AI • Đang khởi động</span>
+      </div>
+
+      <div class="logo-wrap">
+        <img
+          src="logo-loading.png"
+          alt="SIM AI"
+          class="logo"
+        >
+      </div>
+
+      <h1 class="greeting">
+        CHÚC MỪNG TRUNG THU
+      </h1>
+
+      <div class="app-name">
+        THÔNG TIN KHÁCH SIM AI
+      </div>
+
+      <div class="message">
+        Đang chuẩn bị ứng dụng...
+        <br>
+        Chúc bạn một mùa Trung Thu an lành và đoàn viên
+      </div>
+
+      <div class="progress-area">
+
+        <div class="track">
+          <div class="bar" id="progressBar"></div>
+          <div class="shine"></div>
+        </div>
+
+        <div class="loading-text" id="loadingText">
+          Đang kết nối dữ liệu khách hàng...
+        </div>
+
+      </div>
+
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+    </div>
+
+    <div class="bottom-glow"></div>
+    <div class="bottom-line"></div>
+
+  </div>
+
+  <button id="enterBtn" type="button" aria-label="Vào ứng dụng">VÀO ỨNG DỤNG</button>
+
+  <script>
+    const splash = document.getElementById("midAutumn");
+    const bar = document.getElementById("progressBar");
+    const text = document.getElementById("loadingText");
+    const enterBtn = document.getElementById("enterBtn");
+
+    let progress = 8;
+    let done = false;
+    let timer;
+
+    const messages = [
+      "Đang kết nối dữ liệu khách hàng...",
+      "Đang chuẩn bị giao diện SIM AI...",
+      "Đang tải giao diện...",
+      "Sắp hoàn tất..."
+    ];
+
+    function paint(){
+      bar.style.width = Math.min(progress,96) + "%";
+      text.textContent =
+        progress < 30 ? messages[0] :
+        progress < 55 ? messages[1] :
+        progress < 80 ? messages[2] : messages[3];
+    }
+
+    function revealApp(){
+      if(done) return;
+      done = true;
+      clearInterval(timer);
+      bar.style.width = "100%";
+      text.textContent = "Đang mở ứng dụng...";
+      splash.classList.add("hide");
+
+      // Quan trọng: không dùng iframe để tránh lỗi treo trên Chrome/Android.
+      setTimeout(directOpen, 260);
+    }
+
+    function directOpen(){
+      // Fallback cuối cùng: mở web app trực tiếp, không phụ thuộc iframe.
+      window.location.replace(
+        "https://script.google.com/macros/s/AKfycbz2c3Ud95ElKmXTnj7sY9O_m_llFzB8Qdt1wiIOnZCXa7IeOAS7eAMLTFuvo_-XxbPU/exec"
+      );
+    }
+
+    enterBtn.addEventListener("click", directOpen);
+
+    timer = setInterval(() => {
+      if(done) return;
+      if(progress < 30) progress += 5;
+      else if(progress < 55) progress += 3;
+      else if(progress < 78) progress += 1.5;
+      else progress += .5;
+      paint();
+    }, 180);
+
+    paint();
+
+    // Không chờ iframe.onload.
+    // Splash tự kết thúc sau 2.8 giây.
+    setTimeout(revealApp, 2600);
+
+    // Fallback tuyệt đối nếu máy/trình duyệt bị chậm.
+    setTimeout(revealApp, 4500);
+
+  </script>
+</body>
+</html>
