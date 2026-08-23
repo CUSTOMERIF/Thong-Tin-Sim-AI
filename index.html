@@ -2,320 +2,99 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>THÔNG TIN KHÁCH SIM AI</title>
-<meta name="theme-color" content="#071a35">
+<meta name="theme-color" content="#071a38">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="SIM AI">
-
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-
 <style>
-:root{
-  --night:#06152d;
-  --night2:#0b2447;
-  --night3:#14386a;
-  --gold:#ffd35a;
-  --gold2:#ffb82e;
-  --cream:#fff0b0;
-  --text:#f7f7f4;
-  --muted:rgba(247,247,244,.76);
-}
+:root{--bg1:#061126;--bg2:#0b1d40;--bg3:#12305b;--gold:#f5a43b;--gold2:#ffd98b;--text:#eef5ff;--muted:rgba(238,245,255,.78)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{
-  margin:0;width:100%;height:100%;overflow:hidden;
-  font-family:Arial,Helvetica,sans-serif;background:#0b2447;
-}
-#appFrame{
-  position:fixed;inset:0;width:100%;height:100vh;
-  border:0;display:block;background:#fff;
-  opacity:.02;transform:scale(1.01);
-  transition:opacity .55s ease,transform .55s ease;
-}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:var(--bg2)}
+#appFrame{width:100%;height:100vh;border:0;display:block;opacity:.02;transform:scale(1.01);transition:opacity .55s ease,transform .55s ease;background:var(--bg2)}
 body.app-ready #appFrame{opacity:1;transform:scale(1)}
 
-/* ================= INTRO LOGO ================= */
-.intro-logo{
-  position:fixed;inset:0;z-index:10000;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(180deg,#061226,#0a1f40,#102e58);
-  transition:opacity .45s ease,visibility .45s ease;
-}
-.intro-logo.hide{opacity:0;visibility:hidden;pointer-events:none}
-.intro-card{
-  width:min(76vw,250px);aspect-ratio:1;
-  padding:12px;border-radius:26px;
-  background:linear-gradient(180deg,#fff,#f4f5f7);
-  box-shadow:0 20px 55px rgba(0,0,0,.4),0 0 35px rgba(255,193,54,.12);
-  animation:introPop .8s ease both;
-}
-.intro-logo-img{
-  width:100%;height:100%;object-fit:contain;border-radius:17px;
-  animation:introFloat 2s ease-in-out infinite;
-}
-@keyframes introPop{from{transform:scale(.86);opacity:0}60%{transform:scale(1.03);opacity:1}to{transform:scale(1)}}
-@keyframes introFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-
-/* ================= LOADING ================= */
-.loading{
-  position:fixed;inset:0;z-index:9999;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  background:
-    radial-gradient(circle at 50% 22%,rgba(255,208,82,.13),transparent 25%),
-    linear-gradient(180deg,#061226 0%,#0a2142 52%,#173d70 100%);
-  transition:opacity .55s ease,visibility .55s ease;
-}
+.loading{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;overflow:hidden;background:
+radial-gradient(circle at 50% 68%,rgba(245,164,59,.18),transparent 32%),
+radial-gradient(circle at 50% 12%,rgba(255,220,150,.08),transparent 25%),
+linear-gradient(180deg,var(--bg1),var(--bg2) 52%,var(--bg3));transition:opacity .65s ease,visibility .65s ease}
 .loading.hide{opacity:0;visibility:hidden;pointer-events:none}
-
-/* sao */
-.stars{position:absolute;inset:0;pointer-events:none}
-.star{
-  position:absolute;width:3px;height:3px;border-radius:50%;
-  background:#fff4c8;opacity:.72;
-  box-shadow:0 0 7px rgba(255,238,174,.45);
-  animation:twinkle 2.8s ease-in-out infinite;
-}
-@keyframes twinkle{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:.95;transform:scale(1.15)}}
-
-/* hoa đăng */
-.lantern-field{
-  position:absolute;inset:0;overflow:hidden;pointer-events:none;
-}
-.lantern{
-  position:absolute;bottom:-90px;
-  width:24px;height:34px;border-radius:48% 48% 44% 44%;
-  background:
-    radial-gradient(circle at 50% 45%,#fff4b0 0 12%,#ffd44d 18%,#ff9b24 44%,#df3b35 74%,#9e2135 100%);
-  box-shadow:0 0 10px rgba(255,192,55,.75),0 0 24px rgba(255,126,31,.34);
-  opacity:.75;
-  animation:rise var(--dur) linear infinite,drift var(--drift) ease-in-out infinite;
-  animation-delay:var(--delay);
-}
-.lantern:before{
-  content:"";position:absolute;left:50%;top:-8px;transform:translateX(-50%);
-  width:7px;height:8px;border:2px solid rgba(255,216,105,.8);
-  border-bottom:0;border-radius:8px 8px 0 0;
-}
-.lantern:after{
-  content:"";position:absolute;left:50%;bottom:-7px;transform:translateX(-50%);
-  width:7px;height:5px;border-radius:0 0 4px 4px;background:#f3b83d;
-}
-@keyframes rise{
-  0%{bottom:-80px;opacity:0}
-  12%{opacity:.55}55%{opacity:.78}82%{opacity:.3}
-  100%{bottom:108%;opacity:0}
-}
-@keyframes drift{0%,100%{margin-left:0}50%{margin-left:18px}}
-
-/* trăng */
-.moon{
-  position:absolute;top:9%;left:50%;transform:translateX(-50%);
-  width:225px;height:225px;border-radius:50%;
-  background:
-    radial-gradient(circle at 34% 37%,rgba(205,169,80,.16) 0 13%,transparent 14%),
-    radial-gradient(circle at 67% 63%,rgba(205,169,80,.13) 0 10%,transparent 11%),
-    radial-gradient(circle at 50% 45%,#fff3bd 0%,#ffe27b 53%,#ffc94d 100%);
-  box-shadow:0 0 30px rgba(255,224,119,.3),0 0 85px rgba(255,198,65,.15);
-  animation:moonPulse 4s ease-in-out infinite;
-}
-@keyframes moonPulse{0%,100%{box-shadow:0 0 28px rgba(255,224,119,.28),0 0 70px rgba(255,198,65,.12)}50%{box-shadow:0 0 38px rgba(255,224,119,.4),0 0 90px rgba(255,198,65,.2)}}
-
-/* cảnh non nước mềm */
-.landscape{
-  position:absolute;left:0;right:0;bottom:0;height:27%;
-  pointer-events:none;overflow:hidden;opacity:.65;
-}
-.hill{
-  position:absolute;left:-10%;width:120%;border-radius:50% 50% 0 0;
-  filter:blur(1.5px);
-}
-.hill.back{
-  bottom:2%;height:62%;
-  background:linear-gradient(180deg,rgba(123,160,199,.11),rgba(50,87,130,.18));
-  clip-path:polygon(0 78%,12% 55%,24% 69%,37% 45%,51% 68%,65% 49%,78% 67%,90% 52%,100% 70%,100% 100%,0 100%);
-}
-.hill.front{
-  bottom:-4%;height:52%;
-  background:linear-gradient(180deg,rgba(21,58,96,.22),rgba(9,35,67,.7));
-  clip-path:polygon(0 76%,15% 61%,28% 74%,42% 57%,56% 75%,70% 58%,84% 73%,100% 60%,100% 100%,0 100%);
-}
-.mist{
-  position:absolute;left:-10%;width:120%;height:35px;border-radius:50%;
-  background:radial-gradient(ellipse at center,rgba(225,237,249,.17),rgba(225,237,249,0) 72%);
-  filter:blur(9px);animation:mist 8s ease-in-out infinite alternate;
-}
-.mist.a{bottom:30%}.mist.b{bottom:16%;opacity:.5;animation-delay:2s}
-@keyframes mist{from{transform:translateX(-2%)}to{transform:translateX(3%)}}
-
-/* nội dung */
-.loading-card{
-  position:relative;z-index:20;width:min(94vw,430px);
-  min-height:100vh;padding:20px 16px 34px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;
-}
-.badge{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:9px 15px;border-radius:999px;
-  color:#fff;border:1px solid rgba(255,255,255,.16);
-  background:rgba(255,255,255,.08);backdrop-filter:blur(8px);
-  font-size:14px;margin-bottom:16px;
-}
-.badge .dot{
-  width:9px;height:9px;border-radius:50%;background:var(--gold);
-  box-shadow:0 0 12px rgba(255,195,47,.7);
-}
-.logo-box{
-  width:145px;height:145px;border-radius:30px;padding:8px;
-  background:#f7f7f5;box-shadow:0 15px 38px rgba(0,0,0,.35),0 0 24px rgba(255,190,49,.12);
-  margin-bottom:17px;
-  animation:logoFloat 3s ease-in-out infinite;
-}
-.logo-box img{width:100%;height:100%;object-fit:contain;border-radius:22px}
-@keyframes logoFloat{0%,100%{transform:translateY(3px)}50%{transform:translateY(-7px)}}
-
-.title{
-  margin:0;color:#ffd45a;font-size:29px;line-height:1.15;
-  font-weight:900;letter-spacing:.5px;text-shadow:0 2px 16px rgba(255,195,53,.15);
-}
-.title small{display:block;font-size:25px;margin-top:2px}
-.sub{
-  margin-top:15px;color:#fff;font-weight:800;letter-spacing:3px;font-size:16px;
-}
-.greeting{
-  margin-top:11px;max-width:330px;color:var(--muted);
-  line-height:1.55;font-size:14px;
-}
-.progress-wrap{width:min(86vw,300px);margin-top:19px}
-.progress-track{
-  height:8px;border-radius:999px;overflow:hidden;
-  background:rgba(255,255,255,.13);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
-}
-.progress-bar{
-  width:12%;height:100%;border-radius:999px;
-  background:linear-gradient(90deg,#ffbd38,#ffe07b,#fff1bd);
-  box-shadow:0 0 15px rgba(255,193,49,.4);
-  transition:width .25s ease;
-}
-.caption{margin-top:10px;color:var(--muted);font-size:13px}
-.dots{display:flex;gap:8px;margin-top:15px}
-.dots span{
-  width:8px;height:8px;border-radius:50%;background:var(--gold);
-  animation:dot 1.15s ease-in-out infinite;
-}
-.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
-@keyframes dot{0%,100%{transform:translateY(0);opacity:.35}45%{transform:translateY(-4px);opacity:1}}
-
-@media(max-width:480px){
-  .moon{width:190px;height:190px;top:8%}
-  .loading-card{padding-top:18px}
-  .logo-box{width:126px;height:126px;border-radius:27px}
-  .title{font-size:27px}.title small{font-size:24px}
-  .sub{font-size:15px;letter-spacing:2.5px}
-  .greeting{font-size:13px}
-}
+.moon{position:absolute;top:7%;right:11%;width:92px;height:92px;border-radius:50%;background:radial-gradient(circle at 38% 35%,#fff8dc,#ffd98b 48%,#f5a43b 78%,rgba(245,164,59,0) 80%);box-shadow:0 0 55px rgba(255,210,120,.3);opacity:.9}
+.moon:after{content:"";position:absolute;inset:13px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(180,120,50,.12) 0 7%,transparent 8%),radial-gradient(circle at 70% 60%,rgba(180,120,50,.10) 0 9%,transparent 10%)}
+.stars{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.65) 0 1px,transparent 1.5px);background-size:83px 91px;opacity:.18}
+.hills{position:absolute;left:-10%;right:-10%;bottom:-8px;height:170px;opacity:.48;filter:blur(1px)}
+.hill{position:absolute;bottom:0;width:70%;height:115px;border-radius:50% 50% 0 0/100% 100% 0 0;background:linear-gradient(180deg,rgba(16,48,82,.8),rgba(4,18,39,.98));transform:skewX(-12deg)}
+.hill.a{left:-14%;height:120px}.hill.b{left:27%;height:92px;transform:skewX(12deg)}.hill.c{right:-18%;height:135px}
+.water{position:absolute;left:0;right:0;bottom:0;height:58px;background:linear-gradient(180deg,rgba(35,77,105,.18),rgba(3,16,35,.72));box-shadow:0 -1px 0 rgba(255,220,160,.12) inset}
+.loading-card{position:relative;z-index:5;width:min(92vw,420px);padding:20px 18px 28px;text-align:center;display:flex;flex-direction:column;align-items:center}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:#eef5ff;font-size:12px;letter-spacing:.3px;margin-bottom:12px;backdrop-filter:blur(6px)}
+.badge .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px rgba(245,164,59,.6);animation:pulse 1.4s infinite}
+.logo-stage{position:relative;width:230px;height:230px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.sun{position:absolute;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,rgba(255,218,150,.3),rgba(245,164,59,.09) 42%,transparent 70%);animation:sun 3s ease-in-out infinite}
+.logo-box{position:relative;z-index:4;width:140px;height:140px;border-radius:30px;overflow:hidden;background:rgba(255,255,255,.08);box-shadow:0 18px 40px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.08) inset,0 0 30px rgba(245,164,59,.14);backdrop-filter:blur(4px);animation:float 3s ease-in-out infinite}
+.logo-box img{width:100%;height:100%;object-fit:contain;display:block;padding:8px}
+.lantern{position:absolute;z-index:3;width:27px;height:34px;border-radius:48% 48% 42% 42%;background:radial-gradient(circle at 50% 55%,#fff0b0 0 16%,#ffb02e 34%,#c64c17 75%);box-shadow:0 0 18px rgba(255,180,55,.75);opacity:0;animation:rise linear infinite}
+.lantern:before{content:"";position:absolute;left:5px;right:5px;top:-5px;height:5px;border-radius:50%;border-top:2px solid #ffd98b}
+.lantern:after{content:"";position:absolute;left:11px;bottom:-8px;width:5px;height:9px;background:#ffd98b;border-radius:0 0 5px 5px}
+.l1{left:7%;bottom:-25px;animation-duration:6.8s;animation-delay:.2s}.l2{left:23%;bottom:-35px;transform:scale(.75);animation-duration:7.8s;animation-delay:2s}.l3{right:18%;bottom:-30px;transform:scale(.82);animation-duration:7.1s;animation-delay:1.1s}.l4{right:5%;bottom:-40px;transform:scale(.62);animation-duration:8.5s;animation-delay:3.1s}
+.title{margin:0;font-size:28px;font-weight:900;line-height:1.12;color:var(--gold);text-shadow:0 0 20px rgba(245,164,59,.15);text-transform:uppercase}
+.sub{margin-top:9px;max-width:320px;color:var(--text);opacity:.95;line-height:1.55;font-size:14px}
+.progress-wrap{width:min(84vw,260px);margin-top:17px}
+.progress-track{position:relative;width:100%;height:8px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.08)}
+.progress-bar{position:absolute;inset:0 auto 0 0;width:12%;border-radius:999px;background:linear-gradient(90deg,#df8122,var(--gold),var(--gold2));box-shadow:0 0 18px rgba(245,164,59,.34);transition:width .25s ease}
+.caption{margin-top:9px;font-size:12px;color:var(--muted)}
+.dots{margin-top:15px;display:flex;gap:8px}.dots span{width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px rgba(245,164,59,.45);animation:blink 1.2s infinite}.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes pulse{50%{transform:scale(1.2);opacity:1}}
+@keyframes sun{50%{transform:scale(1.08);opacity:.85}}
+@keyframes float{0%,100%{transform:translateY(8px) scale(.97)}50%{transform:translateY(-7px) scale(1.03)}}
+@keyframes rise{0%{opacity:0;transform:translateY(0) scale(.7) rotate(-4deg)}12%{opacity:.9}75%{opacity:.65}100%{opacity:0;transform:translateY(-290px) scale(1) rotate(5deg)}}
+@keyframes blink{40%{transform:translateY(-4px) scale(1.1);opacity:1}80%,100%{opacity:.45}}
+@media(max-width:480px){.moon{width:72px;height:72px;right:8%;top:7%}.logo-stage{width:190px;height:190px}.logo-box{width:118px;height:118px;border-radius:26px}.title{font-size:24px}.sub{font-size:13px}.hills{height:145px}}
 </style>
 </head>
-
 <body>
 
-<iframe
-  id="appFrame"
-  src="https://script.google.com/macros/s/AKfycbz2c3Ud95ElKmXTnj7sY9O_m_llFzB8Qdt1wiIOnZCXa7IeOAS7eAMLTFuvo_-XxbPU/exec"
-  allow="clipboard-read; clipboard-write"
-  loading="eager"
-  scrolling="no">
-</iframe>
+<iframe id="appFrame"
+src="https://script.google.com/macros/s/AKfycbz2c3Ud95ElKmXTnj7sY9O_m_llFzB8Qdt1wiIOnZCXa7IeOAS7eAMLTFuvo_-XxbPU/exec"
+allow="clipboard-read; clipboard-write"
+loading="eager"></iframe>
 
-<!-- LOGO MỞ ĐẦU -->
-<div class="intro-logo" id="introLogo">
-  <div class="intro-card">
-    <img src="logo-loading.png" alt="SIM AI Logo" class="intro-logo-img">
-  </div>
-</div>
-
-<!-- LOADING TRUNG THU -->
-<div class="loading" id="loading" style="display:none">
-  <div class="stars">
-    <i class="star" style="left:12%;top:21%;animation-delay:.2s"></i>
-    <i class="star" style="left:24%;top:15%;animation-delay:1s"></i>
-    <i class="star" style="left:78%;top:24%;animation-delay:.5s"></i>
-    <i class="star" style="left:88%;top:43%;animation-delay:1.4s"></i>
-    <i class="star" style="left:9%;top:48%;animation-delay:1.8s"></i>
-    <i class="star" style="left:68%;top:13%;animation-delay:2s"></i>
-  </div>
-
+<div class="loading" id="loading">
+  <div class="stars"></div>
   <div class="moon"></div>
-
-  <div class="lantern-field">
-    <i class="lantern" style="left:10%;--dur:13s;--drift:4.5s;--delay:0s"></i>
-    <i class="lantern" style="left:26%;--dur:16s;--drift:5.5s;--delay:3s"></i>
-    <i class="lantern" style="left:45%;--dur:14s;--drift:5s;--delay:6s"></i>
-    <i class="lantern" style="left:66%;--dur:17s;--drift:6s;--delay:1.5s"></i>
-    <i class="lantern" style="left:82%;--dur:15s;--drift:5.5s;--delay:4.5s"></i>
-  </div>
-
-  <div class="landscape">
-    <div class="hill back"></div>
-    <div class="hill front"></div>
-    <div class="mist a"></div>
-    <div class="mist b"></div>
-  </div>
+  <div class="hills"><div class="hill a"></div><div class="hill b"></div><div class="hill c"></div></div>
+  <div class="water"></div>
+  <div class="lantern l1"></div><div class="lantern l2"></div><div class="lantern l3"></div><div class="lantern l4"></div>
 
   <div class="loading-card">
-    <div class="badge">
-      <span class="dot"></span>
-      <span>SIM AI • Đang khởi động</span>
+    <div class="badge"><span class="dot"></span><span>SIM AI • Đang khởi động</span></div>
+    <div class="logo-stage">
+      <div class="sun"></div>
+      <div class="logo-box"><img src="logo-loading.png" alt="SIM AI Logo"></div>
     </div>
-
-    <div class="logo-box">
-      <img src="logo-loading.png" alt="SIM AI Logo">
-    </div>
-
-    <h1 class="title">
-      CHÚC MỪNG
-      <small>TRUNG THU</small>
-    </h1>
-
-    <div class="sub">THÔNG TIN KHÁCH SIM AI</div>
-
-    <div class="greeting">
-      Đang chuẩn bị ứng dụng...<br>
-      Chúc bạn một mùa Trung Thu an lành và đoàn viên 🏮
-    </div>
-
+    <h1 class="title">SIM AI</h1>
+    <div class="sub">Đang mở ứng dụng</div>
     <div class="progress-wrap">
-      <div class="progress-track">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
+      <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
       <div class="caption" id="loadingCaption">Vui lòng chờ trong giây lát</div>
     </div>
-
     <div class="dots"><span></span><span></span><span></span></div>
   </div>
 </div>
 
 <script>
-/*
-  QUAN TRỌNG:
-  Phần iframe + load logic bên dưới giữ nguyên cơ chế của index cũ.
-  Chỉ thay giao diện splash Trung Thu.
-*/
-const frame = document.getElementById("appFrame");
-const introLogo = document.getElementById("introLogo");
-const loading = document.getElementById("loading");
-const progressBar = document.getElementById("progressBar");
-const loadingCaption = document.getElementById("loadingCaption");
+const frame=document.getElementById("appFrame");
+const loading=document.getElementById("loading");
+const progressBar=document.getElementById("progressBar");
+const loadingCaption=document.getElementById("loadingCaption");
 
-let hasHidden = false;
-let fakeProgress = 12;
-let progressTimer;
-let loadingStarted = false;
+let hasHidden=false,fakeProgress=12,progressTimer=null,loadingStarted=false;
 
-const loadingTexts = [
+const loadingTexts=[
   "Vui lòng chờ trong giây lát",
   "Đang kết nối dữ liệu khách hàng...",
   "Đang chuẩn bị giao diện SIM AI...",
@@ -323,77 +102,51 @@ const loadingTexts = [
 ];
 
 function updateProgressText(value){
-  if(value < 30) loadingCaption.textContent = loadingTexts[0];
-  else if(value < 55) loadingCaption.textContent = loadingTexts[1];
-  else if(value < 80) loadingCaption.textContent = loadingTexts[2];
-  else loadingCaption.textContent = loadingTexts[3];
+  if(value<30) loadingCaption.textContent=loadingTexts[0];
+  else if(value<55) loadingCaption.textContent=loadingTexts[1];
+  else if(value<80) loadingCaption.textContent=loadingTexts[2];
+  else loadingCaption.textContent=loadingTexts[3];
 }
 
 function startFakeProgress(){
-  if(loadingStarted) return;
-  loadingStarted = true;
-
-  progressBar.style.width = fakeProgress + "%";
+  if(loadingStarted)return;
+  loadingStarted=true;
+  progressBar.style.width=fakeProgress+"%";
   updateProgressText(fakeProgress);
 
-  progressTimer = setInterval(()=>{
-    if(hasHidden) return;
-
-    if(fakeProgress < 35) fakeProgress += Math.random()*6;
-    else if(fakeProgress < 60) fakeProgress += Math.random()*4;
-    else if(fakeProgress < 82) fakeProgress += Math.random()*2.4;
-    else if(fakeProgress < 92) fakeProgress += Math.random()*1.1;
-
-    if(fakeProgress > 92) fakeProgress = 92;
-
-    progressBar.style.width = fakeProgress + "%";
+  progressTimer=setInterval(()=>{
+    if(hasHidden)return;
+    if(fakeProgress<35) fakeProgress+=Math.random()*6;
+    else if(fakeProgress<60) fakeProgress+=Math.random()*4;
+    else if(fakeProgress<82) fakeProgress+=Math.random()*2.4;
+    else if(fakeProgress<92) fakeProgress+=Math.random()*1.1;
+    if(fakeProgress>92)fakeProgress=92;
+    progressBar.style.width=fakeProgress+"%";
     updateProgressText(fakeProgress);
   },220);
 }
 
 function hideLoading(){
-  if(hasHidden) return;
-  hasHidden = true;
-
+  if(hasHidden)return;
+  hasHidden=true;
   clearInterval(progressTimer);
-  progressBar.style.width = "100%";
-  loadingCaption.textContent = "Hoàn tất";
-
+  progressBar.style.width="100%";
+  loadingCaption.textContent="Hoàn tất";
   document.body.classList.add("app-ready");
-
-  setTimeout(()=>{
-    loading.classList.add("hide");
-  },260);
+  setTimeout(()=>loading.classList.add("hide"),260);
 }
 
-function startMainLoading(){
-  introLogo.classList.add("hide");
+/* Chỉ có MỘT màn loading, không có INTRO LOGO thứ hai. */
+loading.style.display="flex";
+startFakeProgress();
 
-  setTimeout(()=>{
-    loading.style.display = "flex";
-    startFakeProgress();
-  },250);
-}
-
-/* GIỮ NGUYÊN TRÌNH TỰ CỦA CODE CŨ */
-loading.style.display = "none";
-
-setTimeout(()=>{
-  startMainLoading();
-},1200);
-
+/* Giữ nguyên cơ chế iframe của code gốc. */
 frame.addEventListener("load",()=>{
-  setTimeout(hideLoading,1450);
+  setTimeout(hideLoading,1200);
 });
 
-setTimeout(()=>{
-  if(!loadingStarted) startMainLoading();
-},1800);
-
-setTimeout(()=>{
-  hideLoading();
-},8500);
+/* Chống treo khi mạng chậm. */
+setTimeout(hideLoading,8500);
 </script>
-
 </body>
 </html>
